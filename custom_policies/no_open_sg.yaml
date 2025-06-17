@@ -1,0 +1,20 @@
+metadata:
+  name: "Disallow Open Security Group Ports"
+  id: "CKV_CUSTOM_2"
+  category: "networking"
+  severity: "CRITICAL"
+  guidelines: "Do not allow 0.0.0.0/0 in ingress rules, as it exposes the resource to the public internet."
+
+definition:
+  and:
+    - resource_types:
+        - aws_security_group
+    - or:
+        - cond_type: attribute
+          attribute: ingress.cidr_blocks[*]
+          operator: contains
+          value: "0.0.0.0/0"
+        - cond_type: attribute
+          attribute: ingress.ipv6_cidr_blocks[*]
+          operator: contains
+          value: "::/0"

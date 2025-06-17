@@ -54,16 +54,16 @@ resource "aws_cloudfront_distribution" "static" {
 
 
 
-resource "null_resource" "invalidate_index_html" {
-  triggers = {
-    index_checksum = filemd5("${path.module}/index.html")
-  }
+# resource "null_resource" "invalidate_index_html" {
+#   triggers = {
+#     index_checksum = filemd5("${path.module}/index.html")
+#   }
 
-  provisioner "local-exec" {
-    command = <<EOT
-      aws cloudfront create-invalidation \
-        --distribution-id ${aws_cloudfront_distribution.static.id} \
-        --paths "/index.html"
-    EOT
-  }
-}
+#   provisioner "local-exec" {
+#     command = <<EOT
+#       aws cloudfront create-invalidation \
+#         --distribution-id ${aws_cloudfront_distribution.static.id} \
+#         --paths "/index.html"
+#     EOT
+#   }
+# }
