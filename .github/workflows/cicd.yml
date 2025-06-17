@@ -125,10 +125,6 @@ jobs:
       - name: Working Dir
         run: pwd
 
-      - name: Terraform test
-        run: terraform test
-        continue-on-error: true
-
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
@@ -243,6 +239,10 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
         run: terraform apply -auto-approve -input=false
+        
+      - name: Terraform test
+        run: terraform test
+        continue-on-error: true
         
       - name: Terraform Apply (Manual Trigger)
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'apply'
