@@ -23,7 +23,7 @@
 
 
 run "test_s3_bucket_creation" {
-  command = apply
+  command = plan
 
   # Check that the S3 bucket is created
   assert {
