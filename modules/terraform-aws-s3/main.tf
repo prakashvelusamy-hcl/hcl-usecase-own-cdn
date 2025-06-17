@@ -50,3 +50,33 @@ resource "aws_s3_object" "index_html" {
 }
 
 
+resource "aws_cloudwatch_metric_alarm" "cloudfront_5xx_error_alarm" {
+  alarm_name          = "CloudFront-5xx-Error-Alarm"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = "5xxErrorRate"
+  namespace           = "AWS/CloudFront"
+  period              = 300
+  statistic           = "Sum"
+  threshold           = 5
+  alarm_description   = "Triggers if CloudFront 5xx error rate exceeds 5 in the last 5 minutes."
+
+  dimensions = {
+    DistributionId = aws_cloudfront_distribution.static.id
+  }
+
+  actions_enabled = true
+
+  alarm_actions = [aws_sns_topic.cloudfront_alarm_topic.arn]
+}
+
+resource "aws_sns_topic" "cloudfront_alarm_topic" {
+  name = "cloudfront_alarm_topic"
+}
+
+resource "aws_sns_topic_subscription" "cloudfront_alarm_email" {
+  topic_arn = aws_sns_topic.cloudfront_alarm_topic.arn
+  protocol  = "email"
+  endpoint  = "prakash8807776601@gmail.com"  
+}
+
