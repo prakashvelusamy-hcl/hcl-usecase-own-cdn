@@ -1,5 +1,5 @@
 # run "test_ec2_instance_creation" {
-#   command = apply
+#   command = plan
 
 #   # Check if the EC2 instance ID is not empty (meaning it was created)
 #   assert {
